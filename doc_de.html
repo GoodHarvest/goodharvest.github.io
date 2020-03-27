@@ -1,0 +1,383 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <title>直播使用说明</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        ×
+                    </button>-->
+                    <h3 class="modal-title" id="myModalLabel">
+                       关键信息已经加密
+                    </h3>
+                </div>
+                <div class="modal-body text-center">
+                    <h3>
+                        请输入我们的英文名称解密(GH)
+                    </h3>
+                </div>
+                <div class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <h4>
+                            <label for="firstname" class="col-sm-3 control-label">秘钥</label>
+                        </h4>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="key" placeholder="请输入我们的英文名称解密">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">
+                        关闭
+                    </button>-->
+                    <button type="button" class="btn btn-primary" id="ver">
+                        验证
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+    <div id="body" hidden>
+        <h2>首先直播人员需要以下三步来操作(请仔细按照流程走)</h2>
+        <div style="border:dashed">
+            <h2><a style="color:red">第一步</a><br />>>主播推流地址<br />把视屏直播到什么地方</h2>
+            <h3 style="color:red;margin:7px 7px 7px 7px;">
+                直播必须先复制下面的开播地址
+            </h3>
+            <input type="text" id="push_url" size="35" value="" style="margin:7px 7px 7px 7px;">
+            <input type="button" onclick="copyLink('push_url','推流地址复制成功,请粘贴到直播软件[推流地址]输入框内,注意,为节省流量,小程序直播尽量SD(标清)直播,请尽量不要点击FHD(全高清)')" style="color:red;margin:7px 7px 7px 7px;" value="点击复制开播推流地址">
+            <h2>>>观看地址</h2>
+            <h3 style="color:red;margin:7px 7px 7px 7px;">
+                复制如下地址 发给需要观看的人
+            </h3>
+            <input type="text" id="live_url" size="35" value="" style="margin:7px 7px 7px 7px;">
+            <input type="button" onclick="copyLink('live_url','观看地址复制成功,请粘贴到聊天窗口')" style="color:red;margin:7px 7px 7px 7px;" value="点击复制观看地址">
+        </div>
+        <br />
+
+        <div id="mini_program" style="border:dashed">
+            <h2><a style="color:red">第二步</a>>>直播软件<br />用来开直播的软件</h2>
+
+            <div style="margin:0px 7px 7px 7px">
+                <div style="border:dashed">
+                    <h3 style="color:red;">
+                        方式一 (此方式比较简易,推荐大众使用) <br />微信小程序直播<br />请在微信中打开 按住二维码 识别小程序 <br />或者使用微信扫描下方二维码
+                    </h3>
+                    <a href="javascript:document.getElementById('miniprogram_tech').scrollIntoView()" style="font-style:oblique">点击跳转直播小程序使用方法</a>
+                    <br />
+                    <img src="../assets/img/MiniProgramPsuhQRCode.png" />
+                </div>
+
+
+                <div style="border:dashed;margin:7px 0px">
+                    <h3 style="color:red;">
+                        方式二  (此方式功能性比较强,如不会安装请使用  方式一)<br />APP直播<br />
+                    </h3>
+                    <h3 id="pc">
+                        <a href="https://dl.softmgr.qq.com/original/Video/OBS-Studio-23.2.1-Full-Installer-x86.exe">点击下载电脑直播客户端</a>
+                    </h3>
+                    <h3 id="apple">
+                        <a href="javascript:document.getElementById('app_tech').scrollIntoView()" style="font-style:oblique">点击跳转APP使用方法</a>
+                        <a href="https://apps.apple.com/cn/app/id1152295397">点击下载苹果直播客户端</a>
+                    </h3>
+                    <h3 id="android">
+                        <a href="javascript:document.getElementById('app_tech').scrollIntoView()" style="font-style:oblique">点击跳转APP使用方法</a>
+                        <a href="http://dldir1.qq.com/hudongzhibo/xiaozhibo/rtmpdemo.apk">点击下载安卓直播客户端</a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <br />
+
+        <div style="border: dashed">
+            <h2>>>直播软件使用方法</h2>
+
+            <div style="border: dashed;margin:7px 7px 7px 7px;">
+                <h3>
+                    下图为微信小程序直播教程 请手动调整大小
+                </h3>
+                <img src="../assets/img/miniprogram_tech.jpg" id="miniprogram_tech" width="100%" height="100%" />
+            </div>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <div style="border:dashed;margin:7px 7px 7px 7px;">
+                <h4>
+                    下图为手机app直播教程 请手动调整大小
+                </h4>
+                <img src="../assets/img/app_tech.jpg" id="app_tech" width="100%" height="100%" />
+            </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+    <script type="text/javascript">
+
+        function encrypt(str, pwd) {
+            if (pwd == null || pwd.length <= 0) {
+                alert("Please enter a password with which to encrypt the message.");
+                return null;
+            }
+            var prand = "";
+            for (var i = 0; i < pwd.length; i++) {
+                prand += pwd.charCodeAt(i).toString();
+            }
+            var sPos = Math.floor(prand.length / 5);
+            var mult = parseInt(prand.charAt(sPos) + prand.charAt(sPos * 2) + prand.charAt(sPos * 3) + prand.charAt(sPos * 4) + prand.charAt(sPos * 5));
+            var incr = Math.ceil(pwd.length / 2);
+            var modu = Math.pow(2, 31) - 1;
+            if (mult < 2) {
+                alert("Algorithm cannot find a suitable hash. Please choose a different password. \nPossible considerations are to choose a more complex or longer password.");
+                return null;
+            }
+            var salt = Math.round(Math.random() * 1000000000) % 100000000;
+            prand += salt;
+            while (prand.length > 10) {
+                prand = (parseInt(prand.substring(0, 10)) + parseInt(prand.substring(10, prand.length))).toString();
+            }
+            prand = (mult * prand + incr) % modu;
+            var enc_chr = "";
+            var enc_str = "";
+            for (var i = 0; i < str.length; i++) {
+                enc_chr = parseInt(str.charCodeAt(i) ^ Math.floor((prand / modu) * 255));
+                if (enc_chr < 16) {
+                    enc_str += "0" + enc_chr.toString(16);
+                } else enc_str += enc_chr.toString(16);
+                prand = (mult * prand + incr) % modu;
+            }
+            salt = salt.toString(16);
+            while (salt.length < 8) salt = "0" + salt;
+            enc_str += salt;
+            return enc_str;
+        }
+
+        function decrypt(str, pwd) {
+            if (str == null || str.length < 8) {
+                alert("A salt value could not be extracted from the encrypted message because it's length is too short. The message cannot be decrypted.");
+                return;
+            }
+            if (pwd == null || pwd.length <= 0) {
+                alert("Please enter a password with which to decrypt the message.");
+                return;
+            }
+            var prand = "";
+            for (var i = 0; i < pwd.length; i++) {
+                prand += pwd.charCodeAt(i).toString();
+            }
+            var sPos = Math.floor(prand.length / 5);
+            var mult = parseInt(prand.charAt(sPos) + prand.charAt(sPos * 2) + prand.charAt(sPos * 3) + prand.charAt(sPos * 4) + prand.charAt(sPos * 5));
+            var incr = Math.round(pwd.length / 2);
+            var modu = Math.pow(2, 31) - 1;
+            var salt = parseInt(str.substring(str.length - 8, str.length), 16);
+            str = str.substring(0, str.length - 8);
+            prand += salt;
+            while (prand.length > 10) {
+                prand = (parseInt(prand.substring(0, 10)) + parseInt(prand.substring(10, prand.length))).toString();
+            }
+            prand = (mult * prand + incr) % modu;
+            var enc_chr = "";
+            var enc_str = "";
+            for (var i = 0; i < str.length; i += 2) {
+                enc_chr = parseInt(parseInt(str.substring(i, i + 2), 16) ^ Math.floor((prand / modu) * 255));
+                enc_str += String.fromCharCode(enc_chr);
+                prand = (mult * prand + incr) % modu;
+            }
+            return enc_str;
+        }
+
+        //model 窗体居中
+        $("div[role='dialog']").on("show.bs.modal", function () {
+            // 具体css样式调整
+            $(this).css({
+                "display": "block",
+                "margin-top": function () {
+                    return ($(this).height() / 3);
+                }
+            });
+        });
+
+        var pushurl = "e39f982b9011c0ce732e05ceb6a66eb2ad107da6dca26f4b0688b93b04744d6a";
+        var liveurl = "f99f812bd904c09161320284b9ac70b7a7057da6d8a4760c078fe4261448895ed721e59bccf134f202ba239d";
+
+        //监听回车
+        document.onkeydown = function (event) {
+            var e = event || window.event;
+            if (e && e.keyCode == 13) { //回车键的键值为13
+                $("#ver").click(); //调用登录按钮的登录事件
+            }
+        };
+
+        //弹窗model
+        $('#myModal').modal({
+            backdrop: false,//点击空白处不关闭对话框
+            keyboard: false,//键盘关闭对话框
+            show: true//弹出对话框
+        });
+
+        $('#ver').click(function () {
+            var key = $('#key').val();
+            if (key.length > 0) {
+                var de_p_u = decrypt(pushurl, key);
+                var de_l_u = decrypt(liveurl, key);
+                if (de_p_u.indexOf("rtmp") > -1 && de_l_u.indexOf("http") > -1) {
+                    $('#myModal').modal("hide");
+                    $('#push_url').val(de_p_u);
+                    $('#live_url').val(de_l_u);
+                    $("#body").show();
+                    return;
+                }
+            }
+            var selector = $('#key').css('position', 'relative');
+            var length = 8;
+            for (var i = 1; i <= length; i++) {
+                if (i % 2 == 0) {
+                    if (i == length) {
+                        selector.animate({ 'left': 0 }, 50);
+                    }
+                    else {
+                        selector.animate({ 'left': 10 }, 50);
+                    }
+                }
+                else {
+                    selector.animate({ 'left': -10 }, 50);
+                }
+            }
+        });
+        /**
+        * 客户端类型
+        */
+        var ClientType = {
+            android: 0,
+            apple: 1,
+            pc: 2,
+        }
+        /**
+          * 判断客户类型
+          */
+        function whatClient() {
+            var userAgentInfo = navigator.userAgent;
+            if (userAgentInfo.indexOf("Android") > 0) {
+                return ClientType.android;
+            } else if (userAgentInfo.indexOf("iPhone") > 0 || userAgentInfo.indexOf("iPad") > 0 || userAgentInfo.indexOf("iPod") > 0) {
+                return ClientType.apple;
+            } else {
+                return ClientType.pc;
+            }
+        }
+        var whetC = whatClient();
+        switch (whetC) {
+            case ClientType.android:
+                document.getElementById('apple').style.display = "none";
+                document.getElementById('pc').style.display = "none";
+                break;
+            case ClientType.apple:
+                document.getElementById('android').style.display = "none";
+                document.getElementById('pc').style.display = "none";
+                break;
+            case ClientType.pc:
+                document.getElementById('apple').style.display = "none";
+                document.getElementById('android').style.display = "none";
+                break;
+            default:
+                break;
+        }
+
+
+        function download_apk() {
+            var downloadUrl = "/client/rtmpdemo.apk";
+            var a = document.createElement("a");
+            a.setAttribute('href', downloadUrl);
+            a.setAttribute('download', downloadUrl);
+            a.click();
+        }
+
+        function copyLink(ele_id, msg) {
+            var e = document.getElementById(ele_id);
+            e.select(); // 选择对象
+            document.execCommand("Copy"); // 执行浏览器复制命令
+            alert(msg);
+        }
+
+
+    </script>
+</body>
+</html>

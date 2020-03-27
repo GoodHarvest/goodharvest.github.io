@@ -1,0 +1,351 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8">
+    <title>ANZHEN Live</title>
+    <link href="//lib.baomitu.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="../assets/css/bootstrap.min.css" rel="stylesheet">-->
+</head>
+
+<body>
+    <div id="tip" class="alert alert-warning text-center" style="display:none">
+        <strong>温馨提示:</strong>
+        <a id="StreamState"></a>
+        <a id="Online"></a>
+    </div>
+    <div class="alert alert-success">
+        <div class="text-center width-full mx-auto shelf-content">
+            <button class="btn btn-primary" onclick="location.reload()">刷新</button>
+            <button class="btn btn-info" onclick="intiVideoObj(VideoType.tc_player)" id="btn_tcplayer">备用1</button>
+            <button class="btn btn-info" onclick="intiVideoObj(VideoType.c_player)" id="btn_clapprplayer">备用2</button>
+        </div>
+    </div>
+
+    <div class="alert alert-success">
+        <div class="container">
+
+            <div class="row" id="row">
+
+                <div class="col middle-column" id="div_mobile_h5player" style="display:none;">
+                    <!--<h1>H5Player</h1>-->
+                    <video referrerpolicy="origin" src="" id="H5Player" controls autoplay="autoplay" style="border:1px solid #000" width="100%" height="480px">
+                        <!--<source src="http://live.gklsoft.com/live/test.m3u8">-->
+                        浏览器不支持 video 标签。
+                    </video>
+                </div>
+
+                <div class="col middle-column" id="div_pc_tcplayer" style="display:none">
+                    <!--<h1>TcPlayer</h1>-->
+                    <div id="tc_player" style="height:480px"></div>
+                </div>
+
+
+                <div class="col middle-column" id="div_pc_clapprplayer" style="display:none;">
+                    <!--<h1>ClapprPlayer</h1>-->
+                    <div id="clappr_player" style="height:480px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--<script type="text/javascript" src="../assets/js/clappr.min.js"></script>
+    <script type="text/javascript" src="../assets/js/TcPlayer-2.3.2.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../assets/js/jquery.min.js" charset="utf-8"></script>-->
+    <script src="//lib.baomitu.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/clappr/0.3.9/clappr.min.js"></script>
+    <script src="//imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.3.2.js"></script>
+    <script>
+        var setreamName = "anzhen";
+
+        /**
+          * m3u8接流地址
+          */
+        var m3u8 = "http://l.ghc.plus/live/" + setreamName + ".m3u8";
+
+        /**
+        * flv接流地址
+        */
+        var flv = "http://l.ghc.plus/live/" + setreamName + ".flv";
+
+        var host = "http://www.ghc.plus/";
+        //    var host = "http://localhost:8080/";
+        /**
+         * 加载开播信息 是否开播
+         */
+        function loadLiveState() {
+            $.ajax({
+                url: host + 'DataService/DATAPI.ashx',
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({
+                    setreamName: setreamName,
+                    doType: "liveState",
+                    liveItem: "DescribeLiveStreamState"
+                }),
+                success: function (result) {
+                    var StreamState = result.StreamState;
+                    if (StreamState == 'inactive') {
+                        document.getElementById('tip').style.display = "";
+                        $('#StreamState').css("color", "red");
+                        $('#StreamState').html("直播未开始,请稍等");
+                        isLive = false;
+                    }
+                    if (StreamState == 'active') {
+                        document.getElementById('tip').style.display = "";
+                        isLive = true;
+                        $('#StreamState').css("color", "green");
+                        $('#StreamState').html("直播已开始,如未播放,请手动刷新播放");
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+
+        /**
+         * 加载播放信息 在线人数
+         */
+        function loadPlayInfo() {
+            //if (isLive) {
+            $.ajax({
+                url: host + 'DataService/DATAPI.ashx',
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({
+                    setreamName: setreamName,
+                    doType: "liveState",
+                    liveItem: "DescribeStreamPlayInfoList"
+                }),
+                success: function (result) {
+                    var Online = result.Online;
+                    if (Online != undefined) {
+                        $('#Online').html("(在线:" + Online + ")");
+                    }
+                },
+                error: function () {
+
+                }
+            });
+            //}
+        }
+        loadLiveState();
+        loadPlayInfo();
+        setInterval("loadLiveState()", 1000 * 5)
+        setInterval("loadPlayInfo()", 1000 * 10)
+
+        /**
+         * 获取当前是一年的第几周
+         */
+        function getWeekOfYear() {
+            var today = new Date();
+            var firstDay = new Date(today.getFullYear(), 0, 1);
+            var dayOfWeek = firstDay.getDay();
+            var spendDay = 1;
+            if (dayOfWeek != 0) {
+                spendDay = 7 - dayOfWeek + 1;
+            }
+            firstDay = new Date(today.getFullYear(), 0, 1 + spendDay);
+            var d = Math.ceil((today.valueOf() - firstDay.valueOf()) / 86400000);
+            var result = Math.ceil(d / 7);
+            return result + 1;
+        };
+
+
+
+        /**
+          * 判断客户类型
+          */
+        function IsPC() {
+            var userAgentInfo = navigator.userAgent;
+            var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
+            var flag = true;
+            for (var v = 0; v < Agents.length; v++) {
+                if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                    flag = false;
+                    break;
+                }
+            }
+            return flag;
+        }
+
+
+        /**
+          * 腾讯播放器
+          */
+        var tc_player = null;//
+
+        /**
+          * Clappr播放器
+          */
+        var c_player = null;//
+
+        /**
+          * H5播放器
+          */
+        var h5_video = null;
+
+
+        /**
+          * 视屏类型
+          */
+        var VideoType = {
+            //腾讯video
+            tc_player: 0,
+            //ClapprVideo
+            c_player: 1,
+            //H5Video
+            h5_video: 2,
+        }
+
+
+
+        /**
+          * 初始化视屏
+          * @param {VideoType}whatVideoType 初始化视屏类型
+          */
+        function intiVideoObj(whatVideoType) {
+            var div_mobile_h5player = document.getElementById('div_mobile_h5player')//手机端播放器层
+            var div_pc_clapprplayer = document.getElementById('div_pc_clapprplayer');//Clappr播放器层
+            var div_pc_tcplayer = document.getElementById('div_pc_tcplayer');//腾讯播放器层
+            var btn_tcplayer = document.getElementById('btn_tcplayer');//腾讯播放器按钮
+            var btn_clapprplayer = document.getElementById('btn_clapprplayer');//Clappr播放器按钮
+
+            switch (whatVideoType) {
+
+                case VideoType.c_player:
+
+                    var row_height = document.getElementById('row').offsetHeight;
+                    var row_width = document.getElementById('row').offsetWidth;
+
+                    div_pc_clapprplayer.style.display = "";
+                    btn_tcplayer.style.display = "";
+
+                    div_pc_tcplayer.style.display = "none";
+                    div_mobile_h5player.style.display = "none";
+                    btn_clapprplayer.style.display = "none";
+
+                    if (c_player == null) {
+                        c_player = new Clappr.Player(
+                            {
+                                source: m3u8,
+                                parentId: "#clappr_player",
+                                width: row_width,//视频的显示宽度，请尽量使用视频分辨率宽度
+                                height: row_height,//视频的显示高度，请尽量使用视频分辨率高度
+                            });
+                    }
+
+                    if (h5_video != null) {
+                        h5_video.pause();//H5暂停
+                    }
+
+                    if (tc_player != null) {
+                        tc_player.pause();//腾讯暂停
+                    }
+
+                    c_player.play();//Clappr播放
+                    break;
+
+                case VideoType.tc_player:
+                    div_pc_tcplayer.style.display = "";
+                    btn_clapprplayer.style.display = "";
+
+                    div_mobile_h5player.style.display = "none";
+                    div_pc_clapprplayer.style.display = "none";
+                    btn_tcplayer.style.display = "none";
+
+                    if (tc_player == null) {
+                        tc_player = new TcPlayer('tc_player',
+                            {
+                                m3u8: m3u8,
+                                flv: flv,
+                                autoplay: true,//iOS 下 safari 浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的
+                                width: "100%",//视频的显示宽度，请尽量使用视频分辨率宽度
+                                height: "100%",//视频的显示高度，请尽量使用视频分辨率高度
+                                volume: 1,//音量 0-1
+                                listener: function (msg) {
+                                    // console.log('listener',msg);
+                                    if (msg.type == 'error') {
+                                        window.setTimeout(function () {
+                                            tc_player.load();//进行重连
+                                        }, 1000);
+                                    }
+                                }
+                            });//腾讯播放器
+                    }
+
+                    if (h5_video != null) {
+                        h5_video.pause();//H5暂停
+                    }
+
+                    if (c_player != null) {
+                        c_player.pause();//Clappr暂停
+                    }
+                    //tc_p_height = document.getElementById('tc_player').offsetHeight;
+                    //tc_p_width = document.getElementById('tc_player').offsetWidth;
+                    tc_player.play();//腾讯播放
+                    break;
+
+                case VideoType.h5_video:
+
+                    div_mobile_h5player.style.display = "";
+                    btn_clapprplayer.style.display = "";
+                    btn_tcplayer.style.display = "";
+
+                    if (h5_video == null) {
+                        h5_video = document.querySelector("#H5Player");//H5播放器
+                        h5_video.setAttribute("src", m3u8);
+
+                        h5_video.onended = function () {//监控是否断线 自动重连
+                            window.setTimeout(function () {
+                                h5_video.setAttribute("src", m3u8);
+                                h5_video.play();//H5播放
+                            }, 1000);
+                        };
+
+                        h5_video.onerror = function () {
+                            window.setTimeout(function () {
+                                h5_video.setAttribute("src", m3u8);
+                                h5_video.play();//H5播放
+                            }, 1000);
+                        };
+
+                        h5_video.onoffline = function () {
+                            window.setTimeout(function () {
+                                h5_video.setAttribute("src", m3u8);
+                                h5_video.play();//H5播放
+                            }, 1000);
+                        };
+
+                    }
+
+                    if (c_player != null) {
+                        c_player.pause();//Clappr暂停
+                    }
+
+                    if (tc_player != null) {
+                        tc_player.pause();//腾讯暂停
+                    }
+
+                    h5_video.play();//H5播放
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+        if (IsPC()) {
+            intiVideoObj(VideoType.tc_player);
+        } else {
+            intiVideoObj(VideoType.h5_video);
+        }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    //}
+    </script>
+</body>
+</html>
+
