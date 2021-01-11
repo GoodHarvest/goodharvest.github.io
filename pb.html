@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="直播历史回放,建议使用电信联通宽带或者是手机流量进行浏览" />
+    <meta property="og:description" content="直播历史回放,建议使用电信联通宽带或者是手机流量进行浏览。" />
+    <title>回放</title>
+
+    <!--图标样式和布局-->
+    <link href="//lib.baomitu.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="../assets/css/bootstrap.min.css" rel="stylesheet">-->
+    <!--公共样式-->
+
+    <style type="text/css">
+        .demo {
+            padding: 2em;
+            background: #fff;
+        }
+
+        .serviceBox {
+            border: 1px solid #ededed;
+            padding: 15px 15px 15px 15px;
+            position: relative;
+            transition: all 0.5s ease 0s;
+        }
+
+            .serviceBox:hover {
+                border-color: #41d7f7;
+            }
+
+            .serviceBox:before,
+            .serviceBox:after {
+                content: "";
+                display: block;
+                width: 50px;
+                height: 5px;
+                background: #41d7f7;
+                position: absolute;
+                left: 0;
+                opacity: 0;
+                transition: all 0.5s ease 0s;
+            }
+
+            .serviceBox:before {
+                top: -3px;
+            }
+
+            .serviceBox:after {
+                bottom: -3px;
+            }
+
+            .serviceBox:hover:before,
+            .serviceBox:hover:after {
+                left: 40px;
+                opacity: 1;
+            }
+
+            .serviceBox .service-icon {
+                display: inline-block;
+                position: absolute;
+                top: 33%;
+                left: 23px;
+                font-size: 45px;
+                color: #41d7f7;
+                opacity: 0.3;
+                transition: all 0.5s ease-in 0s;
+            }
+
+            .serviceBox:hover .service-icon {
+                opacity: 1;
+            }
+
+            .serviceBox .title {
+                font-size: 15px;
+                font-weight: 700;
+                color: #41d7f7;
+                text-align: center;
+            }
+
+            .serviceBox .distance {
+                font-size: 15px;
+                font-weight: 700;
+                color: olive;
+                margin-bottom: 15px;
+                text-align: center;
+            }
+
+            .serviceBox .description {
+                font-size: 13px;
+                color: #666;
+                line-height: 20px;
+                text-align: center;
+                text-decoration: underline;
+            }
+    </style>
+</head>
+
+<body>
+    <div class="alert alert-warning text-center">
+        <strong>温馨提示！</strong><br />
+        建议使用流量进行加载<br />
+        或者使用联通,电信的宽带<br />
+        请等待时间显示出来再点播放<br />
+        如果一直不显示时间不出来请点击刷新<br />或者切换流量后刷新
+    </div>
+    <div style="text-align:center">
+        <button class="btn btn-primary" onclick="location.reload()">刷新</button>
+        <button class="btn btn-success" onclick="window.history.back(-2)">返回直播</button>
+    </div>
+
+    <div class="demo">
+        <div class="container">
+            <div class="row" id="rows">
+                <div class="col-md-6 col-sm-6" style="cursor:pointer" onclick="window.location.href='https://goodharvest.github.io/GH_PB_2021/'">
+                    <div class="serviceBox">
+                        <div class="service-Content">
+
+                            <h3 class="title">
+                                2021年历史回放
+                            </h3>
+                            <p class="description">
+                                2021年历史回放
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6" style="cursor:pointer" onclick="window.location.href='https://goodharvest.github.io/GH_PB_2020/'">
+                    <div class="serviceBox">
+                        <div class="service-Content">
+
+                            <h3 class="title">
+                                2020年历史回放
+                            </h3>
+                            <p class="description">
+                                2020年历史回放
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="//lib.baomitu.com/jquery/3.4.1/jquery.min.js"></script>
+</body>
+
+</html>
