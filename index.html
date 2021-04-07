@@ -65,7 +65,7 @@
     <script src="//imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.3.2.js"></script>-->
     <script>
         var setreamName = "test";
-
+        var isLive = false;
         /**
       * m3u8接流地址
       */
@@ -116,27 +116,27 @@
          * 加载播放信息 在线人数
          */
         function loadPlayInfo() {
-            //if (isLive) {
-            //$.ajax({
-            //    url: host + 'DataService/DATAPI.ashx',
-            //    type: 'POST',
-            //    dataType: 'json',
-            //    data: JSON.stringify({
-            //        setreamName: setreamName,
-            //        doType: "liveState",
-            //        liveItem: "DescribeStreamPlayInfoList"
-            //    }),
-            //    success: function (result) {
-            //        var Online = result.Online;
-            //        if (Online != undefined) {
-            //            $('#Online').html("(在线:" + Online + ")");
-            //        }
-            //    },
-            //    error: function () {
+            if (isLive) {
+                $.ajax({
+                    url: host + 'DataService/DATAPI.ashx',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        setreamName: setreamName,
+                        doType: "liveState",
+                        liveItem: "DescribeStreamPlayInfoList"
+                    }),
+                    success: function (result) {
+                        var Online = result.Online;
+                        if (Online != undefined) {
+                            $('#Online').html("(在线:" + Online + ")");
+                        }
+                    },
+                    error: function () {
 
-            //    }
-            //});
-            //}
+                    }
+                });
+            }
         }
         loadLiveState();
         loadPlayInfo();
@@ -444,7 +444,7 @@
         } else {
             intiVideoObj(VideoType.h5_video);
         }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            //}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    //}
     </script>
 </body>
 </html>
